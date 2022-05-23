@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Drugi_projekat.models.Employee>
+
+@{
+    ViewData["Title"] = "Employees";
+    
+}
+
+@*asp-action="Create"*@
+<div class="row justify-content-between border-bottom mb-3">
+    <div class="col">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+    <div class="col text-end">
+        <a asp-action="Create"><img class="add-button" src="https://img.icons8.com/ios/40/000000/add--v2.png"/></a>
+    </div>
+    
+</div> 
+
+<p class="text-muted"><small>* Click on employee to see details</small></p>
+<div class="table-responsive">
+    <table class="table table-hover align-middle text-center table-bordered">
+    <thead>
+        <tr class="bg-light">
+            <th>
+                @Html.DisplayNameFor(model => model.Photo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th class="hide-td">
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomePhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Extension)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportsToNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model??Enumerable.Empty<Drugi_projekat.models.Employee>()) {
+        <tr style="cursor: pointer">
+            <td  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                @{
+                    var image = item.Photo is not null ? $"data:image/png;base64,{Convert.ToBase64String(item.Photo)}" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPPYSMvGn6iF_kZQs8YyU1jm4VczEPSx2Lpw&usqp=CAU";
+                }
+                <img class="img-fluid rounded-start" src="@image" style="max-width: 35px"/>
+            </td>
+            <td  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                @Html.DisplayFor(modelItem => item.TitleOfCourtesy) @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td class="hide-td"  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                        @(item.BirthDate is not null?item.BirthDate.Value.ToLongDateString():"No data")
+                        
+            </td  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+            <td>
+                @Html.DisplayFor(modelItem => item.HomePhone)
+            </td>
+            <td  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                @Html.DisplayFor(modelItem => item.Extension)
+            </td>
+            <td  onclick="window.location='@($"{Context.Request.Path}/Details/{item.EmployeeId}")'">
+                @(item.ReportsToNavigation is not null?item.ReportsToNavigation.FirstName:"No data")
+                    
+            </td>
+            <td class="">
+@*                <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>*@
+                
+                <div class="btn-group">
+                  <a href="#" class="h5" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class='bx bx-dots-vertical'></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end text-center">
+                    <li><a class="dropdown-item text-primary" asp-action="Edit" asp-route-id="@item.EmployeeId"><i class='bx bx-edit'></i> Edit</a></li>
+                    <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@item.EmployeeId"><i class='bx bx-trash'></i> Delete</a></li>
+                  </ul>
+                </div>
+
+                
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+
+@*<div class="text-center"><a class="d-inline h6" href="@(Context.Request.Path)/Edit/@item.EmployeeId"><i class="bx bxs-edit"><span class="ms-1">Edit</span></i></a><a href="@(Context.Request.Path)/Delete/@item.EmployeeId" class="text-danger h6 d-inline ps-4"><i class="bx bxs-trash"><span class="ms-1">Delete</span></i></a></div>*@

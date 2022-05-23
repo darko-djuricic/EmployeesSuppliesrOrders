@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Drugi_projekat.models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+
+<div class="row justify-content-between border-bottom mb-3">
+    <div class="col">
+        <h1>
+            @ViewData["Title"]
+            @if(ViewBag.Employee is not null)
+            {
+                <span>for <a asp-controller="Employees" asp-action="Details" asp-route-id="@ViewBag.Employee.Id">@ViewBag.Employee.FullName</a></span>
+            }
+
+        </h1>
+    </div>
+    <div class="col text-end">
+        <a asp-action="Create"><img class="add-button" src="https://img.icons8.com/ios/40/000000/add--v2.png"/></a>
+    </div>
+</div> 
+<p class="text-muted"><small>* Click on order to see details</small></p>
+<div class="table-responsive" style="height: 700px">
+<table class="table table-hover align-middle text-center table-bordered">
+    <thead>
+        <tr class="bg-light align-middle">
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequiredDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Freight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipRegion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipPostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipViaNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var order in Model??Enumerable.Empty<Drugi_projekat.models.Order>()) {
+        <tr >
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @if(order.OrderDate is not null)
+                    @order.OrderDate.Value.ToShortDateString()
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @if(order.RequiredDate is not null)
+                    @order.RequiredDate.Value.ToShortDateString()
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @if(order.ShippedDate is not null)
+                    @order.ShippedDate.Value.ToShortDateString()
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.Freight)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.ShipName)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.ShipAddress)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.ShipCity)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.ShipRegion)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.ShipPostalCode)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @Html.DisplayFor(modelItem => order.ShipCountry)
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                    @if(order.Customer is not null)
+                    {
+                        @Html.DisplayFor(modelItem => order.Customer.ContactName)   
+                    }
+            </td>
+            <td>
+                @if(order.Employee is not null)
+                {
+                    <a asp-controller="Employees" asp-action="Details" asp-route-id="@order.EmployeeId">@($"{order.Employee.LastName} {order.Employee.FirstName}")</a>
+                }
+            </td>
+            <td onclick="window.location='@($"{Context.Request.Path}/Details/{order.OrderId}")'">
+                @if(order.ShipViaNavigation is not null)
+                {
+                    @Html.DisplayFor(modelItem => order.ShipViaNavigation.CompanyName)
+                }
+            </td>
+            <td class="">
+                <div class="btn-group">
+                  <a href="#" class="h5" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class='bx bx-dots-vertical'></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end text-center">
+                    <li><a class="dropdown-item text-primary" asp-action="Edit" asp-route-id="@order.OrderId"><i class='bx bx-edit'></i> Edit</a></li>
+                    <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@order.OrderId"><i class='bx bx-trash'></i> Delete</a></li>
+                  </ul>
+                </div>
+
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

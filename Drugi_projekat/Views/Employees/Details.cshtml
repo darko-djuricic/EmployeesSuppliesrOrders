@@ -1,0 +1,92 @@
+﻿@model Drugi_projekat.models.Employee
+
+@{
+    ViewData["Title"] = "Employee - Details";
+    var employee = Model as Drugi_projekat.models.Employee??new Drugi_projekat.models.Employee();
+    var image = employee.Photo is not null ? $"data:image/png;base64,{Convert.ToBase64String(employee.Photo)}" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPPYSMvGn6iF_kZQs8YyU1jm4VczEPSx2Lpw&usqp=CAU";
+    
+
+}
+<nav>
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-action="Index">Employees</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+<div>
+    
+
+    <div class="row  border border-2 h6">
+        <div class="col-sm-5 col-md-4 col-lg-3 col-xl-2 text-center border border-5 bg-light">
+            <div class="h-100 pt-5">
+                <img src="@image" style="min-height: 100px" class="img-fluid @(employee.Photo is null?"rounded-circle":String.Empty) border border-3 p-sm-0"/>
+                <h5 class="fw-bold mt-2">@Html.DisplayFor(model=>model.Title)</h5>
+                <h5 class="fw-bold mt-2">
+                    <age date="@employee.BirthDate"></age>
+                </h5>
+            </div>
+        </div>
+        <div class="col-sm-7 col-md-8 col-lg-9 col-xl-10 lh-base ">
+            <div class="row border border-2 h-100">
+            <h4 class="bg-first-color text-light pt-2 pb-1 mb-3 fw-bold">
+                @($"{employee.TitleOfCourtesy} {employee.FirstName} {employee.LastName}")
+            <a class="text-light float-end" asp-action="Edit" asp-route-id="@employee.EmployeeId"><i class='bx bx-edit'></i></a>
+            </h4>
+                <div class="col-lg-6 col-xl-4">
+                    <div>
+                        <label class="fw-bold" asp-for="BirthDate"></label>:
+                        <span>@DateOnly.FromDateTime(employee.BirthDate??DateTime.MaxValue).ToShortDateString()</span> 
+                    </div>
+                    <div>
+                        <label class="fw-bold" asp-for="HomePhone"></label>:
+                        <a href="tel:@employee.HomePhone">@Html.DisplayFor(model=>model.HomePhone)</a>
+                    </div>
+                    <div>
+                        <label class="fw-bold" asp-for="Address"></label>:
+                        <span>@Html.DisplayFor(model=>model.Address)</span>
+                    </div>
+                    <div>
+                        <label class="fw-bold" asp-for="Region"></label>:
+                        <span>@Html.DisplayFor(model=>model.Region)</span>
+                    </div>
+                    <div>
+                        <label class="fw-bold" asp-for="PostalCode"></label>:
+                        <span>@Html.DisplayFor(model=>model.PostalCode)</span>
+                    </div>
+                    <div>
+                        <label class="fw-bold">Location: </label>
+                        <span>@Html.DisplayFor(model=>model.City)</span>, 
+                        <span>@Html.DisplayFor(model=>model.Country)</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0 lh-base ">
+                <div>
+                        <label class="fw-bold" asp-for="Extension"></label>:
+                        <span>@Html.DisplayFor(model=>model.Extension)</span>
+                    </div>
+                    <div>
+                        <label class="fw-bold" asp-for="HireDate"></label>:
+                        <span>@DateOnly.FromDateTime(employee.BirthDate??DateTime.MaxValue).ToShortDateString()</span> 
+                    </div>
+                    <div>
+                        @{
+                            var reportsTo=employee.ReportsToNavigation??new Drugi_projekat.models.Employee();
+                        }
+                        <label class="fw-bold" asp-for="ReportsToNavigation"></label>:
+                        <a asp-action="Details" asp-route-id="@reportsTo.EmployeeId" >@($"{reportsTo.FirstName} {reportsTo.LastName}")</a>
+                    </div>
+                </div>
+                <div class="col-12 border-top mt-3 pt-2">
+                    <label class="fw-bold" asp-for="Notes"></label>:
+                    <h6>@Html.DisplayFor(model=>model.Notes)</h6>
+                </div>
+                <div class="col-12 mt-3 pt-2 text-end">
+                    <a asp-controller="Orders" asp-action="Index" asp-route-id="@employee.EmployeeId">See orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

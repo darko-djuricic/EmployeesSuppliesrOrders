@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Drugi_projekat.Models.ProductsByOrderAndSupplier>
+
+@{
+    ViewData["Title"] = "Count products";
+    var products = Model ?? Enumerable.Empty<ProductsByOrderAndSupplier>();
+}
+
+<h3 class="pb-1 border-bottom mb-3">Number of products grouped by orders and suppliers</h3>
+<div class="table-responsive" style="height: 700px">
+<table class="table table-hover align-middle text-center table-bordered">
+    <thead>
+        <tr class="bg-light">
+            <th>Order ID</th>
+            <th>Order date</th>
+            <th>Supplier</th>
+            <th>Supplier contact name</th>
+            <th>Supplier contact title</th>
+            <th>Number of products</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in products) {
+        <tr>
+            <td>
+                @if(item.Order is not null){
+                    <a asp-controller="Orders" asp-action="Index" asp-route-id="@item.Order.OrderId">@Html.DisplayFor(modelItem=>item.Order.OrderId)</a>
+                }
+            </td>
+            <td>
+                @if(item.Order is not null && item.Order.OrderDate is not null)
+                    @item.Order.OrderDate.Value.ToLongDateString()
+            </td>
+            <td>
+                @if(item.Supplier is not null)
+                @Html.DisplayFor(modelItem=>item.Supplier.CompanyName)
+            </td>
+            <td>
+                @if(item.Supplier is not null)
+                    @Html.DisplayFor(modelItem=>item.Supplier.ContactName)
+            </td>
+            <td>
+                @if(item.Supplier is not null)
+                    @Html.DisplayFor(modelItem=>item.Supplier.ContactTitle)
+            </td>
+            <td class="text-primary">
+                @Html.DisplayFor(modelItem=>item.Count)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+

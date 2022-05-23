@@ -1,0 +1,93 @@
+﻿@model Drugi_projekat.models.Product
+
+@{
+    ViewData["Title"] = "Product - Supplier";
+}
+
+
+<div class="container-fluid p-0 col-lg-8">
+    <nav class="w-100">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Back</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Supplier products</li>
+        </ol>
+    </nav><hr />
+    <form asp-action="Add" id="save_form" class=" ">
+        <span>
+            Saved products:
+            <a asp-action="Products" class="float-end small">See products table</a>
+        </span>
+        <div id="products" class="row mb-3 mt-3">
+        </div>
+        <button class="btn bg-light btn-sm mt-1 float-end ps-3 pe-3 me-1 fw-bold">Save</button>
+    </form>
+    <form id="addProductForm">
+        <div class="shadow">
+            <h5 class="p-2 bg-first-color text-light col-12">Add products for supplier</h5>
+            <div class="row p-3">
+                <div class="form-group col-md-12 border-bottom pb-3">
+                    <span class="text-danger">*</span><label class="control-label">Pick supplier:</label>
+                    <select asp-for="SupplierId" class ="form-select" size="3" asp-items="ViewBag.SupplierId" required></select>
+                    <span class="text-danger" asp-validation-for="SupplierId"></span>
+                </div>
+            </div>
+            <div class="row p-3 pb-0" id="product-list">
+                <div class="row pb-2 mb-3">
+                    <div class="col-md-6">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <span class="text-danger">*</span><label asp-for="ProductName" class="control-label"></label>
+                            <input required asp-for="ProductName" class="form-control" />
+                            <span class="text-danger" asp-validation-for="ProductName"></span>
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CategoryId" class="control-label"></label>
+                            <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="QuantityPerUnit" class="control-label"></label>
+                            <input asp-for="QuantityPerUnit" class="form-control" />
+                            <span class="text-danger" asp-validation-for="QuantityPerUnit"></span>
+                        </div>
+                        <div class="form-group">
+                            <span class="text-danger">*</span><label asp-for="UnitPrice" class="control-label"></label>
+                            <input required asp-for="UnitPrice" class="form-control" />
+                            <span class="text-danger" asp-validation-for="UnitPrice"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="UnitsInStock" class="control-label"></label>
+                            <input asp-for="UnitsInStock" class="form-control" />
+                            <span class="text-danger" asp-validation-for="UnitsInStock"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UnitsOnOrder" class="control-label"></label>
+                            <input asp-for="UnitsOnOrder" class="form-control" />
+                            <span class="text-danger" asp-validation-for="UnitsOnOrder"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ReorderLevel" class="control-label"></label>
+                            <input asp-for="ReorderLevel" class="form-control" />
+                            <span class="text-danger" asp-validation-for="ReorderLevel"></span> 
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="Discontinued" /> @Html.DisplayNameFor(model => model.Discontinued)
+                            </label>
+                        </div>
+                        <div class="form-group text-end">
+                            <button type="button" onclick="AddProduct()" class="btn bg-first-color mt-2 text-light ps-5 pe-5">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

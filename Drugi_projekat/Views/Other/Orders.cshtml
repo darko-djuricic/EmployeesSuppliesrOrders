@@ -1,0 +1,121 @@
+﻿@using Drugi_projekat.models
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Product for customer";
+    var orders = Model ?? Enumerable.Empty<Order>();
+    var customers=ViewData["Customers"] as IEnumerable<Customer>??Enumerable.Empty<Customer>();
+}
+<form class="row mb-1 border-bottom pb-2 align-items-end">
+    <div class="col-md-5">
+        <label for="customer">Customers:</label>
+        <select id="customer" name="id" class="form-select mt-1" aria-label="Default select example">
+            @foreach(var c in customers)
+            {
+                <optgroup label = "@($"{c.CompanyName}")">
+                    <option selected="@(c.CustomerId.Equals(Context.Request.Query["id"]))" value="@c.CustomerId">@($"{c.ContactName} ({c.ContactTitle})")</option>
+                </optgroup>
+            }
+        </select>
+    </div>
+    <div class="col-md-4 d-grid d-md-block mt-1 mt-md-0">
+        <button class="btn bg-first-color text-light">See orders</button>
+    </div>
+    @if (orders.Count() > 0)
+    {
+        <div class="col-md-3 text-end d-grid d-md-block mt-1 mt-md-0">
+            <a asp-action="Orders" class="btn btn-outline-danger">Reset</a>
+        </div>
+    }
+</form>
+<small class="text-success">*Click on order to see products</small>
+<div class="table-responsive mt-2">
+    <table class="table table-hover align-middle text-center table-bordered">
+    <thead>
+        <tr class="bg-light">
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequiredDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Freight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipPostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipViaNavigation)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in orders) {
+        <tr onclick="window.location='@($"{Context.Request.PathBase}/Other/Products/{item.OrderId}")'">
+            <td>
+                @if(item.OrderDate is not null)
+                    @item.OrderDate.Value.ToShortDateString()
+            </td>
+            <td>
+                @if(item.RequiredDate is not null)
+                    @item.RequiredDate.Value.ToShortDateString()
+            </td>
+            <td>
+                @if(item.ShippedDate is not null)
+                    @item.ShippedDate.Value.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Freight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipPostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipCountry)
+            </td>
+            <td>
+                @if(item.Employee is not null)
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+            </td>
+            <td>
+                @if(item.ShipViaNavigation is not null)
+                    @Html.DisplayFor(modelItem => item.ShipViaNavigation.CompanyName)
+            </td>
+        </tr>
+}
+    @if(orders.Count()<1){
+        <tr>
+            <td class="mt-3 bg-light" colspan="13"><h1 class="mt-3">Pick a customer to see their orders</h1></td>
+        </tr>
+    }
+    </tbody>
+</table>
+</div>
